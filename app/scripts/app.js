@@ -16,7 +16,7 @@ var margin = {
         bottom: 35,
         left: 60
     },
-    width = $("#chartWindow").width() - margin.left - margin.right,
+    width = jQuery("#chartWindow").width() - margin.left - margin.right,
     height = 600 - margin.top - margin.bottom;
 
 var x = d3.scale.linear()
@@ -184,8 +184,8 @@ function makeChart(type) {
     // clear the contents of the chart div before we begin
     // Show the loading gif after a brief delay.... maybe trick it into runing in separate thread? Nope - doesn't work
     //setTimeout(function() {
-    $("#chartWindow").html("<div class='loadingMessage'>Building chart...</div>");
-    $("#chartWindow").append("<div class='loadingGif'><img src='http://bar.utoronto.ca/~jwaese/50YearsOfArabidopsis/images/loading.gif' style='width:150px'></div>");
+    jQuery("#chartWindow").html("<div class='loadingMessage'>Building chart...</div>");
+    jQuery("#chartWindow").append("<div class='loadingGif'><img src='http://bar.utoronto.ca/~jwaese/50YearsOfArabidopsis/images/loading.gif' style='width:150px'></div>");
     //}, 250);
 
     // add 'building chart' message
@@ -226,8 +226,8 @@ function makeChart(type) {
 
     if (type == "category46") {
         // grey out button
-        $('#btn-showNotAth').removeClass('disabled');
-        $('#btn-showCategory46').addClass('disabled');
+        jQuery('#btn-showNotAth').removeClass('disabled');
+        jQuery('#btn-showCategory46').addClass('disabled');
 
         console.log("building chart by Category46");
         // LOAD DATA
@@ -361,9 +361,9 @@ function makeChart(type) {
 
 
                 // update the html page (add buttons, remove loading screen)
-                $('#buttonsBelowChart').css('display', 'block');
-                $('.loadingMessage').remove();
-                $('.loadingGif').remove();
+                jQuery('#buttonsBelowChart').css('display', 'block');
+                jQuery('.loadingMessage').remove();
+                jQuery('.loadingGif').remove();
 
             })
             .on("progress", function(event) {
@@ -378,8 +378,8 @@ function makeChart(type) {
             });
     } else if (type == "citationType") {
         console.log("building chart by Citation Type");
-        $('#btn-showNotAth').addClass('disabled');
-        $('#btn-showCategory46').removeClass('disabled');
+        jQuery('#btn-showNotAth').addClass('disabled');
+        jQuery('#btn-showCategory46').removeClass('disabled');
         // LOAD DATA
         d3.tsv("http://bar.utoronto.ca/~jwaese/50YearsOfArabidopsis/CtypeG", function(error, data) {
 
@@ -510,9 +510,9 @@ function makeChart(type) {
                 console.log("Chart is complete... get Links");
 
                 // update the html page (add buttons, remove loading screen)
-                $('#buttonsBelowChart').css('display', 'block');
-                $('.loadingMessage').remove();
-                $('.loadingGif').remove();
+                jQuery('#buttonsBelowChart').css('display', 'block');
+                jQuery('.loadingMessage').remove();
+                jQuery('.loadingGif').remove();
 
 
             })
@@ -580,11 +580,11 @@ function mouseOverPub(BCI_ID) {
     mouseOver = BCI_ID;
     //console.log("mouseOver: "+BCI_ID);
     // add a marker over the current pub
-    var xx = parseInt($('#pub' + BCI_ID).attr("x"));
+    var xx = parseInt(jQuery('#pub' + BCI_ID).attr("x"));
 
     //var yy = y(allPubs[BCI_ID].Year);
-    var yy = parseInt($('#pub' + BCI_ID).attr("y"));
-    var width = parseInt($('#mouseTarget' + BCI_ID).attr("width")) - 2;
+    var yy = parseInt(jQuery('#pub' + BCI_ID).attr("y"));
+    var width = parseInt(jQuery('#mouseTarget' + BCI_ID).attr("width")) - 2;
 
 
     var svg = d3.select("svg");
@@ -601,7 +601,7 @@ function mouseOverPub(BCI_ID) {
         .attr('opacity', .75);
 
     // make sure the previous Year is gone before you draw this one
-    $('.YearIndicator').remove();
+    jQuery('.YearIndicator').remove();
     svg.append("text")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
         .attr("class", "YearIndicator")
@@ -617,15 +617,15 @@ function mouseOverPub(BCI_ID) {
 function mouseOutPub(BCI_ID) {
     //console.log("mouseOver: "+BCI_ID);
 
-    $('.highlightedPubMarker').remove();
+    jQuery('.highlightedPubMarker').remove();
 
     if (!infoBoxOpen) {
-        $('.interactionLine').remove();
-        $('.interactionMarker').remove();
-        $('.interactionParent').remove();
-        $('.referenceLine').remove();
-        $('.referenceMarker').remove();
-        $('.YearIndicator').remove();
+        jQuery('.interactionLine').remove();
+        jQuery('.interactionMarker').remove();
+        jQuery('.interactionParent').remove();
+        jQuery('.referenceLine').remove();
+        jQuery('.referenceMarker').remove();
+        jQuery('.YearIndicator').remove();
     }
 
 }
@@ -638,13 +638,13 @@ function mouseClickPub(BCI_ID) {
     //console.log("mouseClick: "+BCI_ID+"  category46: "+allPubs[BCI_ID].Category46);
     tip.hide();
     // remove previous infoBox if there are any
-    $('#infoBox').remove();
-    //	$('.highlightedPubMarker').remove();
+    jQuery('#infoBox').remove();
+    //	jQuery('.highlightedPubMarker').remove();
 
 
     // add selected article name to searchBox
-    //$("#searchBox").val(allPubs[BCI_ID].Title).focus();
-    //$("#searchclear").show();	
+    //jQuery("#searchBox").val(allPubs[BCI_ID].Title).focus();
+    //jQuery("#searchclear").show();	
 
 
     var svg = d3.select("svg");
@@ -666,14 +666,14 @@ function mouseClickPub(BCI_ID) {
 
     // add a marker over the current pub
     // first get x, y, width parameters from current rect
-    var xx = parseInt($('#pub' + BCI_ID).attr("x")) + 5;
-    var yy = parseInt($('#pub' + BCI_ID).attr("y"));
+    var xx = parseInt(jQuery('#pub' + BCI_ID).attr("x")) + 5;
+    var yy = parseInt(jQuery('#pub' + BCI_ID).attr("y"));
 
     // remove the old interaction lines and redraw them over the white mask
-    $('.interactionLine').remove();
-    $('.interactionMarker').remove();
-    $('.referenceLine').remove();
-    $('.referenceMarker').remove();
+    jQuery('.interactionLine').remove();
+    jQuery('.interactionMarker').remove();
+    jQuery('.referenceLine').remove();
+    jQuery('.referenceMarker').remove();
 
 
     // draw interaction partner, reference partner, and upward pointing non-Ath citation lines
@@ -684,7 +684,7 @@ function mouseClickPub(BCI_ID) {
     drawCitedPubs(BCI_ID, xx, yy);
 
     // <div> dot over highlighted pub
-    var offset = $('#chartWindow').offset();
+    var offset = jQuery('#chartWindow').offset();
 
     var highlighedPub = "<div class='interactionParent animated zoomIn " + allPubs[BCI_ID].CitationType + "' ";
 
@@ -694,7 +694,7 @@ function mouseClickPub(BCI_ID) {
     highlighedPub += "</div>";
 
     //	console.log(highlighedPub);
-    $('#chartWindow').append(highlighedPub);
+    jQuery('#chartWindow').append(highlighedPub);
 
     var infoBox = "<div id='infoBox' class='infoBox animated fadeIn ui-widget-content'>";
     infoBox += "<div class='infoBox-title'>" + allPubs[BCI_ID].Title + "</div>";
@@ -713,14 +713,14 @@ function mouseClickPub(BCI_ID) {
     infoBox += "</div>";
 
 
-    $('#chartWindow').append(infoBox);
-    $('#infoBox').draggable();
+    jQuery('#chartWindow').append(infoBox);
+    jQuery('#infoBox').draggable();
     /*
-    	$('#infoBox').css("opacity:0");
+    	jQuery('#infoBox').css("opacity:0");
 
 
     	setTimeout(function() {
-    		$('#infoBox').css("opacity:.95");
+    		jQuery('#infoBox').css("opacity:.95");
     	}, 5);
 
     */
@@ -736,19 +736,19 @@ function mouseClickPub(BCI_ID) {
 function closeInfoBox() {
     // console.log("Closing infoBox("+BCI_ID+")");
     // remove previous whiteMask and infoBox if there are any
-    $('#whiteMask').remove();
-    $('.referenceMarker').remove();
-    $('.interactionMarker').remove();
-    $('.interactionParent').remove();
-    $('.highlightedPubMarker').remove();
-    $('#infoBox').remove();
-    $('.interactionLine').remove();
-    $('.referenceLine').remove();
-    $('.nonAthInteractionLine').remove();
-    $('.numNonArabidopsisCitations').remove();
-    $('.YearIndicator').remove();
-    //$("#searchBox").val('').focus();
-    //$("#searchclear").hide();		
+    jQuery('#whiteMask').remove();
+    jQuery('.referenceMarker').remove();
+    jQuery('.interactionMarker').remove();
+    jQuery('.interactionParent').remove();
+    jQuery('.highlightedPubMarker').remove();
+    jQuery('#infoBox').remove();
+    jQuery('.interactionLine').remove();
+    jQuery('.referenceLine').remove();
+    jQuery('.nonAthInteractionLine').remove();
+    jQuery('.numNonArabidopsisCitations').remove();
+    jQuery('.YearIndicator').remove();
+    //jQuery("#searchBox").val('').focus();
+    //jQuery("#searchclear").hide();		
 
     infoBoxOpen = false;
     if (searchMode) {
@@ -759,7 +759,7 @@ function closeInfoBox() {
 
 //--------------------------------------------//
 // Escape key listener... press Escape key to closeInfoBox()
-$(document).keyup(function(e) {
+jQuery(document).keyup(function(e) {
 
     if (e.keyCode == 27) {
         closeInfoBox();
@@ -772,19 +772,19 @@ $(document).keyup(function(e) {
 function closeResultsBox() {
     // console.log("Closing infoBox("+BCI_ID+")");
     // remove previous whiteMask and infoBox if there are any
-    $('#whiteMask').remove();
-    $('.resultsBox').remove();
-    $('.highlightedPubMarker').remove();
-    $('.interactionLine').remove();
-    $('.interactionMarker').remove();
-    $('.interactionParent').remove();
-    $('.referenceLine').remove();
-    $('.referenceMarker').remove();
-    $('.nonAthInteractionLine').remove();
-    $('.numNonArabidopsisCitations').remove();
-    $('.YearIndicator').remove();
-    //$("#searchBox").val('').focus();
-    //$("#searchclear").hide();		
+    jQuery('#whiteMask').remove();
+    jQuery('.resultsBox').remove();
+    jQuery('.highlightedPubMarker').remove();
+    jQuery('.interactionLine').remove();
+    jQuery('.interactionMarker').remove();
+    jQuery('.interactionParent').remove();
+    jQuery('.referenceLine').remove();
+    jQuery('.referenceMarker').remove();
+    jQuery('.nonAthInteractionLine').remove();
+    jQuery('.numNonArabidopsisCitations').remove();
+    jQuery('.YearIndicator').remove();
+    //jQuery("#searchBox").val('').focus();
+    //jQuery("#searchclear").hide();		
 
     searchMode = false;
 }
@@ -905,11 +905,11 @@ function drawCitingPubs(BCI_ID, x, y) {
         // Add tooltips
         svg.call(tip);
 
-        var offset = $('#chartWindow').offset();
+        var offset = jQuery('#chartWindow').offset();
 
         for (var i = 0; i < interactors.length; i++) {
-            var ix = parseInt($('#mouseTarget' + interactors[i]).attr("x")) + (parseInt($('#mouseTarget' + interactors[i]).attr("width")) / 2);
-            var iy = parseInt($('#mouseTarget' + interactors[i]).attr("y"));
+            var ix = parseInt(jQuery('#mouseTarget' + interactors[i]).attr("x")) + (parseInt(jQuery('#mouseTarget' + interactors[i]).attr("width")) / 2);
+            var iy = parseInt(jQuery('#mouseTarget' + interactors[i]).attr("y"));
 
             /// curved interaction lines
             // curved interaction lines from: http://bl.ocks.org/mbostock/4063550
@@ -959,7 +959,7 @@ function drawCitingPubs(BCI_ID, x, y) {
             interactionMarker += "</div>";
 
             //console.log("Citing Pub: "+interactionMarker);
-            $('#chartWindow').append(interactionMarker);
+            jQuery('#chartWindow').append(interactionMarker);
 
 
         }
@@ -979,11 +979,11 @@ function drawCitedPubs(BCI_ID, x, y) {
         // Add tooltips
         svg.call(tip);
 
-        var offset = $('#chartWindow').offset();
+        var offset = jQuery('#chartWindow').offset();
 
         for (var i = 0; i < interactors.length; i++) {
-            var ix = parseInt($('#mouseTarget' + interactors[i]).attr("x")) + (parseInt($('#mouseTarget' + interactors[i]).attr("width")) / 2);
-            var iy = parseInt($('#mouseTarget' + interactors[i]).attr("y"));
+            var ix = parseInt(jQuery('#mouseTarget' + interactors[i]).attr("x")) + (parseInt(jQuery('#mouseTarget' + interactors[i]).attr("width")) / 2);
+            var iy = parseInt(jQuery('#mouseTarget' + interactors[i]).attr("y"));
 
             /// curved interaction lines
             // curved interaction lines from: http://bl.ocks.org/mbostock/4063550
@@ -1034,7 +1034,7 @@ function drawCitedPubs(BCI_ID, x, y) {
             //console.log(interactionMarker);
             //console.log("Cited Pub: "+interactionMarker);
 
-            $('#chartWindow').append(interactionMarker);
+            jQuery('#chartWindow').append(interactionMarker);
 
         }
     }
@@ -1044,10 +1044,10 @@ function drawCitedPubs(BCI_ID, x, y) {
 function drawCategory46Legend() {
     // use the multicolored column symbols
     var legendColumnSymbols = '<p style="display:inline-block;"><img src="http://bar.utoronto.ca/~jwaese/50YearsOfArabidopsis/images/sampleColumn.png" style="float:left; margin-right:10px;">Columns indicate all the Arabidopsis papers published in a year. </p><p style="display:inline-block;"><img src="http://bar.utoronto.ca/~jwaese/50YearsOfArabidopsis/images/sampleColumnHighlighted.png" style="float:left; margin-right:10px;">Each horizontal bar represents a different paper. The width of the bar indicates the log2 of the number of times it has been cited. </p>';
-    $('#legendColumnSymbols').html(legendColumnSymbols);
+    jQuery('#legendColumnSymbols').html(legendColumnSymbols);
 
     // add all the dots
-    //$("#legendMainContents").html("").addClass("fourColumns");
+    //jQuery("#legendMainContents").html("").addClass("fourColumns");
 
     var legendRow = ""; //"<div class='legendRow' onclick='onlyShowCategory(\"ShowAll\")'><div id='legendShowAll' class='legendSymbol legendSymbolSelected' style='background:#DDDDDD'></div><div class='legendName' style='font-weight: bold;'>SHOW ALL CATEGORIES</div></div><br>";
 
@@ -1055,7 +1055,7 @@ function drawCategory46Legend() {
         legendRow += "<div class='legendRow' onclick='onlyShowCategory(\"" + allConceptCodes[i].ConceptCode + "\")'><div id='legend" + allConceptCodes[i].ConceptCode + "' class='legendSymbol' style='background:" + allConceptCodes[i].Color + "'></div><div class='legendNameSmall'>" + allConceptCodes[i].Category + "</div></div><br><br>";
     }
 
-    $('#legendMainContents').append(legendRow);
+    jQuery('#legendMainContents').append(legendRow);
 
     console.log("legend added");
 }
@@ -1068,17 +1068,17 @@ function drawCitationTypeLegend() {
 
 
     var legendColumnSymbols = '<p style="display:inline-block;"><img src="http://bar.utoronto.ca/~jwaese/50YearsOfArabidopsis/images/sampleColumnCitationType.png" style="float:left; margin-right:10px;">Columns indicate all the Arabidopsis papers published in a year. </p><p style="display:inline-block;"><img src="http://bar.utoronto.ca/~jwaese/50YearsOfArabidopsis/images/sampleColumnCitationTypeHighlighted.png" style="float:left; margin-right:10px;">Each horizontal bar represents a different paper. The width of the bar indicates the log2 of the number of times it has been cited. </p>';
-    $('#legendColumnSymbols').html(legendColumnSymbols);
+    jQuery('#legendColumnSymbols').html(legendColumnSymbols);
 
 
-    $("#legendMainContents").html("").removeClass("fourColumns");
+    jQuery("#legendMainContents").html("").removeClass("fourColumns");
 
     //var legend = "<div class='legendRow' onclick='onlyShowCategory(\"ShowAll\")'><div id='legendShowAll' class='legendSymbol legendSymbolSelected' style='background:#DDDDDD'></div><div class='legendName' style='font-weight: bold;'>SHOW ALL CATEGORIES</div></div><br>";
     var legend = "<div class='legendRow' onclick='onlyShowCategory('NotAth')'><div id='legendAth' class='legendSymbol NotAth' style='background: #99CC00'></div><div class='legendName'>Cited by non-Arabidopsis papers</div></div><br>";
     legend += "<div class='legendRow' onclick='onlyShowCategory('Ath')'><div id='legendAth' class='legendSymbol' style='background: #1973FF'></div><div class='legendName'>Arabidopsis citations only</div></div><br>";
     legend += "<div class='legendRow' onclick='onlyShowCategory('None')'><div id='legendAth' class='legendSymbol' style='background: #BBBBBB; border:none;'></div><div class='legendName'>Papers with no citations</div></div><br>";
 
-    $('#legendMainContents').append(legend);
+    jQuery('#legendMainContents').append(legend);
 
 }
 
