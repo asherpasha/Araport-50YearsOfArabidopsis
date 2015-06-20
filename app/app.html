@@ -1,0 +1,147 @@
+<!--
+<script src="../bower_components/d3/d3.js"></script>
+<script src="../bower_components/d3-tip/index.js"></script>
+<link rel="stylesheet" href="../bower_components/jquery-ui/themes/smoothness/jquery-ui.min.css">
+<script src="../bower_components/jquery-ui/ui/core.js"></script>
+<script src="../bower_components/jquery-ui/ui/widget.js"></script>
+<script src="../bower_components/jquery-ui/ui/accordion.js"></script>
+-->
+
+<div class="science-app" data-app-name="araport-50yearsofarabidopsis">
+    <div class="container">
+        <div class="row">
+
+                <!-- Header -->
+                <div id='chartLabel' class='text-center'><h1>50 Years of Arabidopsis Research</h1></div>
+                <p class='text-center'>This chart displays 54,033 Arabidopsis papers from 1965 through 2015. <br>Click on a paper to see its citation network or search for individual papers in the box below.</p>
+
+
+                <!-- Search Box (Title/Author) -->
+                <div class="row">
+                  <div class="col-lg-3"></div><!-- a space holder for left side -->
+                  <div class="col-lg-6">
+                    <!-- input-group -->
+                    <div class="input-group">
+                       <input type="text" id="searchBox" class="form-control" aria-label="Search Box" placeholder="Enter title or author search term here.">
+                       <span class="input-group-btn">
+                          <span id="searchclear" class="glyphicon glyphicon-remove-circle" onclick="closeInfoBox()"></span>
+                          <button class="btn btn-success" type="button" id="searchButton" onclick="searchForMatches();">
+                             <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                          </button>
+                       </span>
+                    </div><!-- /input-group -->
+
+                  </div><!-- /.col-lg-6 -->
+                  <div class="col-lg-3"></div><!-- a space holder for right side -->
+                </div><!-- /.row -->
+
+
+                <!-- This is the main chart window that gets filled dynmically -->
+                <div id="chartWindow"></div>
+
+
+                <!-- Button Toolbar below chart -->
+                <div id="buttonsBelowChart" class="col-lg-12" style="display:none; margin-bottom: 50px;">
+                    <button type="button" class="btn btn-default btn-sm" onclick="$('#legendPopup').show();" style="margin-right:30px;">Open Legend</button>
+                    <button type="button" id="btn-showCategory46" class="btn btn-default btn-sm" onclick="drawCategory46Legend(); makeChart('category46');">Show Papers By Category Code</button>
+                    <button type="button" id="btn-showNotAth" class="btn btn-default btn-sm" onclick="drawCitationTypeLegend(); makeChart('citationType');" style="margin-right:30px;">Show Papers By Citing Species</button>
+                    <button type="button" id="btn-about" class="btn btn-default btn-sm" data-toggle="modal" data-target="#aboutModal">About</button>
+                    <button type="button" id="btn-about" class="btn btn-default btn-sm" data-toggle="modal" data-target="#commentsModal">Comments</button>                    
+                    <button type="button" class="btn btn-default btn-sm pull-right" onclick="closeInfoBox();closeResultsBox();$('#legendPopup').hide();">Reset Screen</button>
+                </div>
+
+        </div> <!-- /row --> 
+    </div> <!-- /container --> 
+
+
+
+    <!-- ///////////////////////////////////////////////////////////////////// -->
+    <!-- About  Modal -->
+    <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="Source Code button" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                    <h2 class="modal-title" id="myModalLabel">About</h2>
+                
+                    <div class="modal-body">
+                        <div>
+                            <p>Thomson Reuters' Biosis database covering publications from 1800 to March 2015 was searched for papers with Arabidopsis in the title, abstract or keywords. This resulted in a data set of 54,116 papers. This chart only displays publications from 1965 to March 2015, a total of 54,033 papers.</p>
+                            <p>Concept codes and bibliographic information were provided as data dumps from Thomson Reuters. A further data set encompassing all 1,830,099 citations of these papers was also provided. The citations were both by papers in the original 54k data set and by papers from outside it. In total, 283,110 papers cited the 54k data set. Structured taxonomic data were available for 275,307 of these papers. </p>
+                            <p>Taxonomic data were used to flag papers in the original 54k data set as being cited by non-Arabidopsis thaliana papers. Note that some papers in the superset of citing papers actually were indexed with Arabidopsis thaliana in the Taxonomy field but didn't mention Arabidopsis in the title, abstract or keywords, thus the 54k set is a slight underestimation of the total number of Arabidopsis papers. </p>
+                            <p>Concept codes for the 54k set of Arabidopsis papers were also provided by Thomsom Reuters as a text file. We used the concept codes to flag papers in the 54k set as having been involved in the least abundant code out of 46 that were chosen to provide a balance between not being too general (75% of the papers were tagged with 03504: Genetics - Plant) and not being too specific (just one paper was tagged with 64500: Paleobiology). Concept code terms ranged in prevalence from 11.6% for "51512: Plant physiology - Reproduction" to 1.04% for "13014: Metabolism - Nucleic acids, purines and pyrimidines". </p>
+                            <p>Custom Perl scripts were used to parse that data. Graphing was done with Javascript and d3.js. </p>
+                            <p>The viewer was developed for a forthcoming review on 50 Years of Arabidopsis Research by Provart et al. for the New Phytologist (submitted). This viewer runs on the BAR or as an app on Araport.</p>
+                            <p>&nbsp;</p>
+                        </div>                    
+                    </div>        
+            </div>
+        </div>
+    </div> 
+ </div>
+
+
+
+
+
+    <!-- ///////////////////////////////////////////////////////////////////// -->
+    <!-- Disqus  Modal -->
+    <div class="modal fade" id="commentsModal" tabindex="-1" role="dialog" aria-labelledby="Comments button" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                <h2 class="modal-title" id="commentsModalLabel">Discuss</h2>
+                </div>
+                <div class="modal-body">
+                  <div id="disqus_thread"></div>
+                      <script type="text/javascript">
+                          /* * * CONFIGURATION VARIABLES * * */
+                          var disqus_shortname = '50yearsofarabidopsisresearch';
+                          
+                          /* * * DON'T EDIT BELOW THIS LINE * * */
+
+// Comment this section out to turn Discuss off...
+                          (function() {
+                              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                              dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                          })();
+//
+
+
+                      </script>
+                </div>        
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- ///////////////////////////////////////////////////////////////////// -->
+    <!-- Legend  Popup -->
+    <div id="legendPopup" class="animated fadeIn">
+        <div>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="$('#legendPopup').hide()">x</button>
+            <h3 class="modal-title" style="margin-bottom:10px;">Legend</h3>
+        </div>
+        <div class="legendArea">
+            <div id="legendTopRow" style="margin-bottom: 15px;">
+                <div id="legendColumnSymbols"></div>
+
+                <p style="display:inline-block;"><div class="interactionMarkerLegend Ath"></div>Papers that cite the highlighted item.</p>                        
+                <p style="display:inline-block;"><div class="referenceMarkerLegend Ath"></div>Backward citations (papers the highlighted item has cited).</p>
+                <p style="display:inline-block;"><div class="interactionMarkerLegend NotAth"></div>Papers that have been referenced outside the Arabidopsis community.</p>
+
+                <p style="display:inline-block;"><img src="http://bar.utoronto.ca/~jwaese/50YearsOfArabidopsis/images/nonAthCitations.png" style="margin-right:5px;">Non-Arabidopsis citations.</p>  
+
+                <p style="display:inline-block;"><img src="http://bar.utoronto.ca/~jwaese/50YearsOfArabidopsis/images/citationIndicator.png" style="margin-right:5px;">Horizontal line indicates the log2 of the number of citations.</p>  
+
+                <p style="display:inline-block; font-weight: bold; margin-top:10px;">Papers are coloured according to the concept codes listed below.</p>  
+            </div>
+
+            <div id="legendMainContents"></div>                     
+        </div>        
+    </div>
+</div>

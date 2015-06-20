@@ -1,0 +1,518 @@
+/* Page Settings */
+
+button {
+  z-index: 0;
+}
+
+.logo {
+  float: left;
+  margin: 5px;
+  width:40px;
+}
+
+.chartWindow {
+  z-index: 1;'
+}
+
+.loadingGif {
+  text-align: center;
+  margin: 20 auto;
+}
+
+.loadingMessage {
+  margin: 20px;
+  text-align: center;
+  color: grey;
+}
+
+.btn-success {
+  background-color: #99CC00 !important;
+  border-color: #99CC00 !important;
+}
+
+/* Chart Settings */
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #DDDDDD;
+  shape-rendering: crispEdges;
+}
+
+.pub {
+  pointer-events: none;
+}
+
+.mouseTarget {
+   cursor: pointer;
+}
+
+
+.interactionMarker {
+    cursor: pointer;
+    position:absolute;
+    border-width: 4px;
+    border-color: white;
+    border-radius: 40px;
+    height: 20px;
+    width: 20px;
+    opacity: .75;
+
+    transition: all .25s;
+    -webkit-box-shadow: 1px 1px 2px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    1px 1px 2px 0px rgba(50, 50, 50, 0.75);
+    box-shadow:         1px 1px 2px 0px rgba(50, 50, 50, 0.75);
+}
+
+.interactionMarker:hover {
+    border-width: 7px;
+  }
+
+.referenceMarker {
+    cursor: pointer;
+    position:absolute;
+    border-width: 4px;
+    border-color: white;
+    height: 20px;
+    width: 20px;
+    opacity: .85;
+
+    transition: all .25s;
+    -webkit-box-shadow: 2px 2px 4px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    2px 2px 4px 0px rgba(50, 50, 50, 0.75);
+    box-shadow:         2px 2px 4px 0px rgba(50, 50, 50, 0.75);
+}
+
+.referenceMarker:hover {
+    border-width: 7px;
+  }
+
+
+.interactionParent {
+    cursor: pointer;
+    position:absolute;
+    display: inline-block;
+    border-width: 4px;
+    border-color: black;
+    border-radius: 40px;
+    height: 20px;
+    width: 20px;
+    opacity: .85;
+    transition: all .25s;
+    -webkit-box-shadow: 1px 1px 2px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    1px 1px 2px 0px rgba(50, 50, 50, 0.75);
+    box-shadow:         1px 1px 2px 0px rgba(50, 50, 50, 0.75);
+  }
+.interactionParent:hover {
+    border-width: 7px;
+  }
+
+.NotAth {
+   border-style: dotted !important;
+}
+
+.Ath {
+   border-style: solid;
+}
+
+.highlightedPubMarker {
+  -webkit-pointer-events: none;
+  pointer-events: none;
+}
+
+
+
+.whiteMask {
+  -webkit-pointer-events: none;
+  pointer-events: none;
+}
+
+
+.fourColumns{
+  page-break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  break-inside: avoid;
+
+    -webkit-column-gap: 20px;
+       -moz-column-gap: 20px;
+            column-gap: 20px;
+    -webkit-column-count: 4;
+       -moz-column-count: 4;
+            column-count: 4;
+}
+
+#legendPopup {
+  display: none;
+  position: absolute;
+  padding: 20px;
+  width:600px;
+  top: 30%;
+  left: 10%;
+  cursor: move;
+  background-color: rgba(255,255,255,0.95);
+  border-width: 1px;
+  border-color: #DDDDDD;
+  transition: all .25s;
+  -webkit-box-shadow: 2px 2px 4px 0px rgba(50, 50, 50, 0.75);
+  -moz-box-shadow:    2px 2px 4px 0px rgba(50, 50, 50, 0.75);
+  box-shadow:         2px 2px 4px 0px rgba(50, 50, 50, 0.75);  
+  font-size: 1em;  
+}
+
+.legendArea {
+  cursor: initial;
+  overflow-y: scroll;
+  max-height: 500px;
+}
+
+.legendRow {
+ /* cursor: pointer;*/
+  display: block;
+  margin-bottom: 3px;
+  float: left;
+  width:100%;
+}
+
+
+.legendSymbol {
+  cursor: pointer;
+  border-radius: 50px;
+  float: left; 
+  width:18px; 
+  height:18px; 
+  margin-top: 8px; 
+  margin-right: 5px;
+  border: 4px solid white;
+  transition: all .25s;
+  -webkit-box-shadow: 1px 1px 2px 0px rgba(50, 50, 50, 0.75);
+  -moz-box-shadow:    1px 1px 2px 0px rgba(50, 50, 50, 0.75);
+  box-shadow:         1px 1px 2px 0px rgba(50, 50, 50, 0.75);
+}
+
+.interactionMarkerLegend {
+    background:#CCCCCC; 
+    float:left; 
+    margin-right:10px; 
+    display: inline-block;
+    border-style: solid;
+    border-width: 4px;
+    border-color: white;
+    border-radius: 40px;
+    height: 20px;
+    width: 20px;
+    opacity: .85;
+    pointer-events: none;
+    transition: all .25s;
+    -webkit-box-shadow: 1px 1px 2px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    1px 1px 2px 0px rgba(50, 50, 50, 0.75);
+    box-shadow:         1px 1px 2px 0px rgba(50, 50, 50, 0.75);
+}
+
+.referenceMarkerLegend {
+    background:#CCCCCC; 
+    float:left; 
+    margin-right:10px; 
+    display: inline-block;
+    border-style: solid;
+    border-width: 4px;
+    border-color: white;
+    height: 20px;
+    width: 20px;
+    opacity: .85;
+    pointer-events: none;
+    transition: all .25s;
+    -webkit-box-shadow: 2px 2px 3px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    2px 2px 3px 0px rgba(50, 50, 50, 0.75);
+    box-shadow:         2px 2px 3px 0px rgba(50, 50, 50, 0.75);
+}
+
+.legendSymbol:hover {
+  border: solid 7px white;
+}
+
+.legendSymbolSelected {
+  border: solid 7px black;  
+}
+
+.legendName {
+  font-size: 1em;
+  line-height: 1.1em;
+  padding-left:2.5em;
+  padding-top:9px;
+}
+
+.legendNameSmall {
+  font-size: 1em;
+  line-height: 1.1em;
+  padding-left:2.5em;
+  padding-top:9px;
+}
+
+/* ResultsBox Settings */
+.resultsBox {
+  cursor: move;
+  position: absolute;
+  top: 25%;
+  left: 10%;
+  width: 400px;
+  line-height: 1.25;
+  padding: 12px;
+  color: #000;
+  border: #BBBBBB;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 2px;
+  background:#FFFFFF;
+  opacity: 0.9;
+  z-index: 500;
+  -webkit-box-shadow: 1px 1px 2px 0px rgba(50, 50, 50, 0.75);
+  -moz-box-shadow:    1px 1px 2px 0px rgba(50, 50, 50, 0.75);
+  box-shadow:         1px 1px 2px 0px rgba(50, 50, 50, 0.75);
+}
+
+
+
+/* Infobox Settings */
+.infoBox {
+  cursor: move;
+  position: absolute;
+  top: 27%;
+  left: 12%;
+  width: 400px;
+  line-height: 1.25;
+  padding: 12px;
+  color: #000;
+  border: #BBBBBB;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 3px;
+  background:#FFFFFF;
+  opacity: 0.95;
+  z-index: 750;
+
+  -webkit-box-shadow: 1px 1px 2px 0px rgba(50, 50, 50, 0.75);
+  -moz-box-shadow:    1px 1px 2px 0px rgba(50, 50, 50, 0.75);
+  box-shadow:         1px 1px 2px 0px rgba(50, 50, 50, 0.75);
+}
+
+.infoBox-title {
+  font-weight: bold;
+  font-size: 1.1em;
+  margin-bottom: 6px;
+}
+.infoBox-body {
+  font-weight: normal;
+  font-size: .9em;
+}
+.infoBox-citations {
+  font-weight: normal;
+  font-size: .9em;
+}
+
+.infoBox-categoryMarker {
+    border-color: black;
+    border-width: 4px;
+    height: 20px;
+    width: 20px;
+    opacity: .85;
+    border-radius: 40px;
+    float:left;
+    margin-top: 5px;
+    margin-right: 5px;
+}
+
+
+
+
+.shadow {
+    -webkit-box-shadow: 1px 1px 2px 0px rgba(50, 50, 50, 0.75);
+  -moz-box-shadow:    1px 1px 2px 0px rgba(50, 50, 50, 0.75);
+  box-shadow:         1px 1px 2px 0px rgba(50, 50, 50, 0.75);
+}
+
+
+
+/* Tooltip Settings */
+.tip-title {
+  font-weight: normal;
+  font-size: 1.1em;
+  margin-bottom: 6px;
+}
+.tip-body {
+  font-weight: normal;
+  font-size: .85em;
+}
+.tip-citations {
+  font-weight: normal;
+  font-size: .85em;
+}
+
+.citationIndicatorBase {
+  width: 100px; 
+  height: 5px;
+  border-radius: 10px;
+  float: right;
+  margin-right: 0px;
+  margin-top: 5px;
+}
+
+.citationIndicatorBar {
+  position: absolute;
+  height:5px;
+  border-radius: 10px;
+  margin-right: 0px;
+  background-color: #888888;
+}
+
+.d3-tip {
+  width: 300px;
+  line-height: 1.25;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 20px;
+  width: 100%;
+  line-height: 1.25;
+  color: rgba(0, 0, 0, 0.8);
+  position: absolute;
+  pointer-events: none;
+}
+
+/* Northward tooltips */
+.d3-tip.n:after {
+  content: "\25BC";
+  margin: -6px 0 0 0;
+  top: 100%;
+  left: 0;
+  text-align: center;
+}
+
+/* Eastward tooltips */
+.d3-tip.e:after {
+  content: "\25C0";
+  margin: -4px 0 0 0;
+  top: 50%;
+  left: -8px;
+}
+
+/* Southward tooltips */
+.d3-tip.s:after {
+  content: "\25B2";
+  margin: 0 0 1px 0;
+  top: -18px;
+  left: 0;
+  text-align: center;
+}
+
+/* Westward tooltips */
+.d3-tip.w:after {
+  content: "\25B6";
+  margin: -4px 0 0 -2px;
+  top: 50%;
+  left: 100%;
+}
+
+.ui-autocomplete {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    float: left;
+    display: none;
+    width: 500px;   
+    padding: 4px 0;
+    margin: 0 0 10px 25px;
+    list-style: none;
+    background-color: #ffffff;
+    border-color: #ccc;
+    border-color: rgba(0, 0, 0, 0.2);
+    border-style: solid;
+    border-width: 1px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding;
+    background-clip: padding-box;
+    *border-right-width: 2px;
+    *border-bottom-width: 2px;
+}
+
+.ui-menu-item > a.ui-corner-all {
+    display: block;
+    padding: 3px 15px;
+    clear: both;
+    font-weight: normal;
+    /* line-height: 18px; */
+    color: #555555;
+    white-space: nowrap;
+    text-decoration: none;
+    height: 300px;
+}
+
+.ui-state-hover, .ui-state-active {
+    color: #ffffff;
+    text-decoration: none;
+    background-color: #0088cc;
+    border-radius: 0px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    background-image: none;
+}
+  .ui-autocomplete {
+    max-height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .ui-autocomplete-title {
+    font-size: 1em;
+  }
+  .ui-autocomplete-authors {
+    font-size: .85em;
+  } 
+  .ui-autocomplete-citations {
+    float: right;
+    font-size: .85em;
+  } 
+
+
+
+
+#searchBox {
+  padding-right:40px;
+  z-index: 0;
+}
+
+#searchclear {
+    position:absolute;
+    right:47px;
+    bottom:5px;
+    top: 0px;
+    height:14px;
+    margin:auto;
+    font-size:18px;
+    cursor:pointer;
+    color:#888888;
+    z-index: 1;
+}
+
+.tinyText{
+  font-size: .65em;
+  vertical-align: top;
+}
+
+
+
