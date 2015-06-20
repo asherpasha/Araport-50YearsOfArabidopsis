@@ -1089,7 +1089,7 @@ function drawCitationTypeLegend() {
 	
 	// Load jQuery-UI
 	function loadFiles() {
-		var allScripts, i, uiCore, uiWidget, uiAccordion, uiCss, re, el, d3, d3-tip;
+		var allScripts, i, uiCore, uiWidget, uiAccordion, uiCss, re, el, d3, d3tip;
 
 		// Load the dependances: The new way. Thanks for AIP staff for this
 		allScripts = document.querySelectorAll( 'script' );
@@ -1159,14 +1159,14 @@ function drawCitationTypeLegend() {
 		for ( i = 0; i < allScripts.length && ! uiCore; i++ ) {
 			if ( re.test( allScripts[i].src ) ) {
 				var match = re.exec( allScripts[i].src );
-				d3-tip = match[1] + match[2] + 'index.js';
+				d3tip = match[1] + match[2] + 'index.js';
 			}
 		}
 		
 		// Add d3-tip.js
-		if ( d3 ) {
+		if ( d3tip) {
 			el = document.createElement( 'script' );
-			el.src = d3-tip;
+			el.src = d3tip;
 			el.type = 'text/javascript';
 			document.body.appendChild( el );
 		}
