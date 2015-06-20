@@ -80,7 +80,7 @@ function nonAthCitationIndicator(nonAthNum, athNum, color) {
 //--------------------------------------------//
 // Load concept codes data
 function loadConceptCodes() {
-    d3.tsv("http://bar.utoronto.ca/~asher/50YearsOfArabidopsis/cgi-bin/file3.cgi", function(data) {
+    d3.tsv("https://bar.utoronto.ca/50Years/cgi-bin/file3.cgi", function(data) {
         //console.log(data);
         for (var i = 0; i < data.length; i++) {
             // Add to the array
@@ -101,7 +101,7 @@ function loadConceptCodes() {
 //--------------------------------------------//
 // Load interactions data
 function loadInteractions() {
-    d3.tsv("http://bar.utoronto.ca/~asher/50YearsOfArabidopsis/cgi-bin/file1.cgi", function(data) {
+    d3.tsv("https://bar.utoronto.ca/50Years/cgi-bin/file1.cgi", function(data) {
         console.log("Loaded allLinks");
 
         for (var i = 0; i < data.length; i++) {
@@ -231,7 +231,7 @@ function makeChart(type) {
 
         console.log("building chart by Category46");
         // LOAD DATA
-        d3.tsv("http://bar.utoronto.ca/~asher/50YearsOfArabidopsis/cgi-bin/file2.cgi", function(error, data) {
+        d3.tsv("https://bar.utoronto.ca/50Years/cgi-bin/file2.cgi", function(error, data) {
 
                 buildAssociativeArrayOfData(data);
                 // make a color table for each category
