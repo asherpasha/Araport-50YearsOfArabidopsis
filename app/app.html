@@ -42,12 +42,12 @@
 
                 <!-- Button Toolbar below chart -->
                 <div id="buttonsBelowChart" class="col-lg-12" style="display:none; margin-bottom: 50px;">
-                    <button type="button" class="btn btn-default btn-sm" onclick="$('#legendPopup').show();" style="margin-right:30px;">Open Legend</button>
+                    <button type="button" class="btn btn-default btn-sm" onclick="jQuery('#legendPopup').show();" style="margin-right:30px;">Open Legend</button>
                     <button type="button" id="btn-showCategory46" class="btn btn-default btn-sm" onclick="drawCategory46Legend(); makeChart('category46');">Show Papers By Category Code</button>
                     <button type="button" id="btn-showNotAth" class="btn btn-default btn-sm" onclick="drawCitationTypeLegend(); makeChart('citationType');" style="margin-right:30px;">Show Papers By Citing Species</button>
                     <button type="button" id="btn-about" class="btn btn-default btn-sm" data-toggle="modal" data-target="#aboutModal">About</button>
                     <button type="button" id="btn-about" class="btn btn-default btn-sm" data-toggle="modal" data-target="#commentsModal">Comments</button>                    
-                    <button type="button" class="btn btn-default btn-sm pull-right" onclick="closeInfoBox();closeResultsBox();$('#legendPopup').hide();">Reset Screen</button>
+                    <button type="button" class="btn btn-default btn-sm pull-right" onclick="closeInfoBox();closeResultsBox();jQuery('#legendPopup').hide();">Reset Screen</button>
                 </div>
 
         </div> <!-- /row --> 
@@ -123,7 +123,7 @@
     <!-- Legend  Popup -->
     <div id="legendPopup" class="animated fadeIn">
         <div>
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="$('#legendPopup').hide()">x</button>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="jQuery('#legendPopup').hide()">x</button>
             <h3 class="modal-title" style="margin-bottom:10px;">Legend</h3>
         </div>
         <div class="legendArea">
