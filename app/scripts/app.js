@@ -381,7 +381,7 @@ function makeChart(type) {
         jQuery('#btn-showNotAth').addClass('disabled');
         jQuery('#btn-showCategory46').removeClass('disabled');
         // LOAD DATA
-        d3.tsv("http://bar.utoronto.ca/~jwaese/50YearsOfArabidopsis/CtypeG", function(error, data) {
+        d3.tsv("https://bar.utoronto.ca/50Years/cgi-bin/file4.cgi", function(error, data) {
 
                 buildAssociativeArrayOfData(data);
                 // make a color table for each citationType
