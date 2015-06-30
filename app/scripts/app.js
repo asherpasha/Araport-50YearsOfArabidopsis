@@ -1,4 +1,4 @@
-/*globals d3*/
+///*globals d3*/
 // global variables
 var allPubs = {}; // an associative array keyed by BCI_ID of all publications, including Title, Author, Year, etc.
 var allLinks = {}; // an associative array keyed by BCI_ID of all the pubs that reference a specific pub
@@ -80,7 +80,17 @@ function nonAthCitationIndicator(nonAthNum, athNum, color) {
 //--------------------------------------------//
 // Load concept codes data
 function loadConceptCodes() {
-    d3.tsv("https://bar.utoronto.ca/50Years/cgi-bin/file3.cgi", function(data) {
+	query = {
+		file: "three"
+	};
+
+	window.Agave.api.adama.search({
+		'namespace':'asher-dev', 'service': '50years_v0.1.0', 'queryParams': query
+	} , function(response) {
+		var mydata = JSON.parse(response.data);
+		var datatemp = mydata.stuff;
+		//alert(datatemp);
+		data = getd3tsv(datatemp);
         //console.log(data);
         for (var i = 0; i < data.length; i++) {
             // Add to the array
@@ -101,7 +111,17 @@ function loadConceptCodes() {
 //--------------------------------------------//
 // Load interactions data
 function loadInteractions() {
-    d3.tsv("https://bar.utoronto.ca/50Years/cgi-bin/file1.cgi", function(data) {
+	query = {
+		file: "one"
+	};
+
+	window.Agave.api.adama.search({
+		'namespace':'asher-dev', 'service': '50years_v0.1.0', 'queryParams': query
+	} , function(response) {
+		var mydata = JSON.parse(response.data);
+		var datatemp = mydata.stuff;
+		//alert(datatemp);
+		data = getd3tsv(datatemp);
         console.log("Loaded allLinks");
 
         for (var i = 0; i < data.length; i++) {
@@ -174,7 +194,35 @@ function makeCitationTypeColorTable() {
 
 }
 
+// formats data so it looks like tsv output data
+function getd3tsv(data) {
+	var finalData = new Array();
+	var dataArray = data.split("\n");
+	var header = dataArray.shift();
+	var headerArray = header.split("\t");
+	var dataLineArray = new Array();
+	var jsonString = "";
 
+	dataArray.forEach(function(dataRow) {
+		dataLineArray = dataRow.split("\t");
+		jsonString = '{';
+		for (var i = 0; i < dataLineArray.length; i++)  {
+			jsonString = jsonString + '"' + headerArray[i] + '":"' + dataLineArray[i] + '"';
+			if (i < dataLineArray.length -1) {
+				jsonString = jsonString + ",";
+			}
+		}
+		jsonString = jsonString + '}';
+		//alert(jsonString);
+		//alert("here0");
+		jsonString = JSON.parse(jsonString);
+		//alert("here1");
+		//alert(jsonString);
+		finalData.push(jsonString);
+		//alert(finalData[0].Title);
+	});
+	return finalData;
+}
 
 //--------------------------------------------//
 // make the SVG chart
@@ -231,7 +279,17 @@ function makeChart(type) {
 
         console.log("building chart by Category46");
         // LOAD DATA
-        d3.tsv("https://bar.utoronto.ca/50Years/cgi-bin/file2.cgi", function(error, data) {
+		query = {
+			file: "two"
+		};
+
+		window.Agave.api.adama.search({
+			'namespace':'asher-dev', 'service': '50years_v0.1.0', 'queryParams': query
+		} , function(response) {
+			var mydata = JSON.parse(response.data);
+			var datatemp = mydata.stuff;
+			//alert(datatemp);
+			data = getd3tsv(datatemp);
 
                 buildAssociativeArrayOfData(data);
                 // make a color table for each category
@@ -366,7 +424,7 @@ function makeChart(type) {
                 jQuery('.loadingGif').remove();
 
             })
-            .on("progress", function(event) {
+           	/* .on("progress", function(event) {
                 //update progress bar
                 if (d3.event.lengthComputable) {
                     var percentComplete = Math.round(d3.event.loaded * 100 / d3.event.total);
@@ -375,13 +433,23 @@ function makeChart(type) {
                         console.log("Building chart.... stand by...");
                     }
                 }
-            });
+            }); */
     } else if (type == "citationType") {
         console.log("building chart by Citation Type");
         jQuery('#btn-showNotAth').addClass('disabled');
         jQuery('#btn-showCategory46').removeClass('disabled');
         // LOAD DATA
-        d3.tsv("https://bar.utoronto.ca/50Years/cgi-bin/file4.cgi", function(error, data) {
+		query = {
+			file: "four"
+		};
+
+		window.Agave.api.adama.search({
+			'namespace':'asher-dev', 'service': '50years_v0.1.0', 'queryParams': query
+		} , function(response) {
+			var mydata = JSON.parse(response.data);
+			var datatemp = mydata.stuff;
+			//alert(datatemp);
+			data = getd3tsv(datatemp);
 
                 buildAssociativeArrayOfData(data);
                 // make a color table for each citationType
@@ -515,8 +583,8 @@ function makeChart(type) {
                 jQuery('.loadingGif').remove();
 
 
-            })
-            .on("progress", function(event) {
+            });
+            /*.on("progress", function(event) {
                 //update progress bar
                 if (d3.event.lengthComputable) {
                     var percentComplete = Math.round(d3.event.loaded * 100 / d3.event.total);
@@ -525,7 +593,7 @@ function makeChart(type) {
                         console.log("Building chart.... stand by...");
                     }
                 }
-            });
+            });*/
     }
 
 }
@@ -684,7 +752,7 @@ function mouseClickPub(BCI_ID) {
     drawCitedPubs(BCI_ID, xx, yy);
 
     // <div> dot over highlighted pub
-    var offset = jQuery('#chartWindow').offset();
+    var offset = jQuery('#chartWindow').position();
 
     var highlighedPub = "<div class='interactionParent animated zoomIn " + allPubs[BCI_ID].CitationType + "' ";
 
@@ -905,7 +973,7 @@ function drawCitingPubs(BCI_ID, x, y) {
         // Add tooltips
         svg.call(tip);
 
-        var offset = jQuery('#chartWindow').offset();
+        var offset = jQuery('#chartWindow').position();
 
         for (var i = 0; i < interactors.length; i++) {
             var ix = parseInt(jQuery('#mouseTarget' + interactors[i]).attr("x")) + (parseInt(jQuery('#mouseTarget' + interactors[i]).attr("width")) / 2);
@@ -979,7 +1047,7 @@ function drawCitedPubs(BCI_ID, x, y) {
         // Add tooltips
         svg.call(tip);
 
-        var offset = jQuery('#chartWindow').offset();
+        var offset = jQuery('#chartWindow').position();
 
         for (var i = 0; i < interactors.length; i++) {
             var ix = parseInt(jQuery('#mouseTarget' + interactors[i]).attr("x")) + (parseInt(jQuery('#mouseTarget' + interactors[i]).attr("width")) / 2);
@@ -1374,7 +1442,7 @@ function drawCitationTypeLegend() {
                     var yy = parseInt($('#pub' + results[i]).attr("y"));
 
                     // <div> dot over highlighted pub
-                    var offset = $('#chartWindow').offset();
+                    var offset = $('#chartWindow').position();
 
                     // draw interaction partner dot as a <div>
                     var interactionMarker = "<div id='interactionMarker" + results[i] + "' ";
