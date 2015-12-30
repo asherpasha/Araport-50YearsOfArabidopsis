@@ -85,7 +85,7 @@ function loadConceptCodes() {
 	};
 
 	window.Agave.api.adama.search({
-		'namespace':'asher-dev', 'service': '50years_v0.1.0', 'queryParams': query
+		'namespace':'asher-dev', 'service': '50years_v0.1.1', 'queryParams': query
 	} , function(response) {
 		var mydata = JSON.parse(response.data);
 		var datatemp = mydata.stuff;
@@ -116,7 +116,7 @@ function loadInteractions() {
 	};
 
 	window.Agave.api.adama.search({
-		'namespace':'asher-dev', 'service': '50years_v0.1.0', 'queryParams': query
+		'namespace':'asher-dev', 'service': '50years_v0.1.1', 'queryParams': query
 	} , function(response) {
 		var mydata = JSON.parse(response.data);
 		var datatemp = mydata.stuff;
@@ -284,7 +284,7 @@ function makeChart(type) {
 		};
 
 		window.Agave.api.adama.search({
-			'namespace':'asher-dev', 'service': '50years_v0.1.0', 'queryParams': query
+			'namespace':'asher-dev', 'service': '50years_v0.1.1', 'queryParams': query
 		} , function(response) {
 			var mydata = JSON.parse(response.data);
 			var datatemp = mydata.stuff;
@@ -444,7 +444,7 @@ function makeChart(type) {
 		};
 
 		window.Agave.api.adama.search({
-			'namespace':'asher-dev', 'service': '50years_v0.1.0', 'queryParams': query
+			'namespace':'asher-dev', 'service': '50years_v0.1.1', 'queryParams': query
 		} , function(response) {
 			var mydata = JSON.parse(response.data);
 			var datatemp = mydata.stuff;
