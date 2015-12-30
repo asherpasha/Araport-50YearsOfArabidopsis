@@ -1227,7 +1227,7 @@ function drawCitationTypeLegend() {
 		for ( i = 0; i < allScripts.length && ! uiCore; i++ ) {
 			if ( re.test( allScripts[i].src ) ) {
 				var match = re.exec( allScripts[i].src );
-				d3tip = match[1] + match[2] + '/index.js';
+				d3tip = match[1] + match[2] + 'index.js';
 			}
 		}
 		
