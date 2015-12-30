@@ -2,8 +2,8 @@
   "name": "araport-50yearsofarabidopsis",
   "private": true,
   "dependencies": {
-    "d3": "~3.5.5",
-    "d3-tip": "~0.6.7",
-    "jquery-ui": "~1.11.4"
+    "d3": "3.5.5",
+    "d3-tip": "0.6.7",
+    "jquery-ui": "1.11.4"
   }
 }

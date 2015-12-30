@@ -233,7 +233,7 @@ function makeChart(type) {
     // Show the loading gif after a brief delay.... maybe trick it into runing in separate thread? Nope - doesn't work
     //setTimeout(function() {
     jQuery("#chartWindow").html("<div class='loadingMessage'>Building chart...</div>");
-    jQuery("#chartWindow").append("<div class='loadingGif'><img src='http://bar.utoronto.ca/~jwaese/50YearsOfArabidopsis/images/loading.gif' style='width:150px'></div>");
+    jQuery("#chartWindow").append("<div class='loadingGif'><img src='http://bar.utoronto.ca/webservices/araport/50Years/loading.gif' style='width:150px'></div>");
     //}, 250);
 
     // add 'building chart' message
@@ -1111,7 +1111,7 @@ function drawCitedPubs(BCI_ID, x, y) {
 //--------------------------------------------//
 function drawCategory46Legend() {
     // use the multicolored column symbols
-    var legendColumnSymbols = '<p style="display:inline-block;"><img src="http://bar.utoronto.ca/~jwaese/50YearsOfArabidopsis/images/sampleColumn.png" style="float:left; margin-right:10px;">Columns indicate all the Arabidopsis papers published in a year. </p><p style="display:inline-block;"><img src="http://bar.utoronto.ca/~jwaese/50YearsOfArabidopsis/images/sampleColumnHighlighted.png" style="float:left; margin-right:10px;">Each horizontal bar represents a different paper. The width of the bar indicates the log2 of the number of times it has been cited. </p>';
+    var legendColumnSymbols = '<p style="display:inline-block;"><img src="http://bar.utoronto.ca/webservices/araport/50Years/sampleColumn.png" style="float:left; margin-right:10px;">Columns indicate all the Arabidopsis papers published in a year. </p><p style="display:inline-block;"><img src="http://bar.utoronto.ca/webservices/araport/50Years/sampleColumnHighlighted.png" style="float:left; margin-right:10px;">Each horizontal bar represents a different paper. The width of the bar indicates the log2 of the number of times it has been cited. </p>';
     jQuery('#legendColumnSymbols').html(legendColumnSymbols);
 
     // add all the dots
@@ -1135,7 +1135,7 @@ function drawCitationTypeLegend() {
     // use the blue, green, grey column symbols
 
 
-    var legendColumnSymbols = '<p style="display:inline-block;"><img src="http://bar.utoronto.ca/~jwaese/50YearsOfArabidopsis/images/sampleColumnCitationType.png" style="float:left; margin-right:10px;">Columns indicate all the Arabidopsis papers published in a year. </p><p style="display:inline-block;"><img src="http://bar.utoronto.ca/~jwaese/50YearsOfArabidopsis/images/sampleColumnCitationTypeHighlighted.png" style="float:left; margin-right:10px;">Each horizontal bar represents a different paper. The width of the bar indicates the log2 of the number of times it has been cited. </p>';
+    var legendColumnSymbols = '<p style="display:inline-block;"><img src="http://bar.utoronto.ca/webservices/araport/50Years/sampleColumnCitationType.png" style="float:left; margin-right:10px;">Columns indicate all the Arabidopsis papers published in a year. </p><p style="display:inline-block;"><img src="http://bar.utoronto.ca/webservices/araport/50Years/sampleColumnCitationTypeHighlighted.png" style="float:left; margin-right:10px;">Each horizontal bar represents a different paper. The width of the bar indicates the log2 of the number of times it has been cited. </p>';
     jQuery('#legendColumnSymbols').html(legendColumnSymbols);
 
 
