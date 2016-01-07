@@ -118,6 +118,11 @@ function loadInteractions() {
 	window.Agave.api.adama.search({
 		'namespace':'asher-dev', 'service': '50years_v0.1.1', 'queryParams': query
 	} , function(response) {
+		// I don't know why do we need this, but we need these lines for the code to work.
+		if (response.length == 0) {
+			setTimeout(callback, 2000);
+		}
+
 		var mydata = JSON.parse(response.data);
 		var datatemp = mydata.stuff;
 		//alert(datatemp);
@@ -155,10 +160,6 @@ function loadInteractions() {
 
 
         console.log("Ready to use.");
-		// I don't know why do we need this, but we need these lines for the code to work.
-		if (mydata.length == 0) {
-			setTimeout(callback, 2000);
-		}
     });
 }
 
