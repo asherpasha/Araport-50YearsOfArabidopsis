@@ -143,9 +143,9 @@ function loadInteractions() {
             // If BCI_ID exists, add the links to the array
             if (data[i].Citing in allBackLinks) {
                 allBackLinks[data[i].Citing].push(data[i].BCI_ID);
-            }
+           
             // otherwise create a new record and the element to the array
-            else {
+            } else {
                 allBackLinks[data[i].Citing] = [];
                 allBackLinks[data[i].Citing].push(data[i].BCI_ID);
             }
@@ -155,6 +155,10 @@ function loadInteractions() {
 
 
         console.log("Ready to use.");
+		// I don't know why do we need this, but we need these lines for the code to work.
+		if (mydata.length == 0) {
+			setTimeout(callback, 2000);
+		}
     });
 }
 
@@ -1227,7 +1231,7 @@ function drawCitationTypeLegend() {
 		for ( i = 0; i < allScripts.length && ! uiCore; i++ ) {
 			if ( re.test( allScripts[i].src ) ) {
 				var match = re.exec( allScripts[i].src );
-				d3tip = match[1] + match[2] + 'index.js';
+				d3tip = match[1] + match[2] + '/index.js';
 			}
 		}
 		
