@@ -116,7 +116,7 @@ function loadInteractions() {
 	};
 
 	window.Agave.api.adama.search({
-		'namespace':'asher-dev', 'service': '50years_v0.1.1', 'timeout': 10000, 'queryParams': query
+		'namespace':'asher-dev', 'service': '50years_v0.1.1', 'timeout': 360000, 'queryParams': query
 	} , function(response) {
 
 		var mydata = JSON.parse(response.data);
