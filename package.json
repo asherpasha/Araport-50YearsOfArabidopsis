@@ -1,6 +1,6 @@
 {
   "name": "araport-50yearsofarabidopsis",
-  "version": "0.0.0",
+  "version": "0.0.10",
   "dependencies": {},
   "devDependencies": {
     "grunt": "~0.4.5",
@@ -15,7 +15,8 @@
     "grunt-inline": "^0.3.2",
     "grunt-wiredep": "^1.9.0",
     "jshint-stylish": "^0.4.0",
-    "load-grunt-tasks": "^0.6.0"
+    "load-grunt-tasks": "^0.6.0",
+    "lodash": "^3.0"
   },
   "engines": {
     "node": ">= 0.10.0"
