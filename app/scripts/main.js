@@ -81,7 +81,7 @@ function nonAthCitationIndicator(nonAthNum, athNum, color) {
 //--------------------------------------------//
 // Load concept codes data
 function loadConceptCodes() {
-	$.ajax({
+	jQuery.ajax({
 		beforeSend: function(request) {
 			request.setRequestHeader('Authorization', 'Bearer ' + Agave.token.accessToken);
 		},
@@ -112,7 +112,7 @@ function loadConceptCodes() {
 //--------------------------------------------//
 // Load interactions data
 function loadInteractions() {
-	$.ajax({
+	jQuery.ajax({
 		beforeSend: function(request) {
 			request.setRequestHeader('Authorization', 'Bearer ' + Agave.token.accessToken);
 		},
@@ -273,7 +273,7 @@ function makeChart(type) {
         console.log("building chart by Category46");
         // LOAD DATA
 
-		$.ajax({
+		jQuery.ajax({
 			beforeSend: function(request) {
 				request.setRequestHeader('Authorization', 'Bearer ' + Agave.token.accessToken);
 			},
@@ -432,7 +432,7 @@ function makeChart(type) {
         jQuery('#btn-showCategory46').removeClass('disabled');
         // LOAD DATA
 
-		$.ajax({
+		jQuery.ajax({
 			beforeSend: function(request) {
 				request.setRequestHeader('Authorization', 'Bearer ' + Agave.token.accessToken);
 			},
