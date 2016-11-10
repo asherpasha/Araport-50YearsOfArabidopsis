@@ -8,6 +8,11 @@
   "fullscreen": "default",
   "html": "main.html",
   "scripts": [
+    "scripts/pace.min.js",
+	"scripts/jquery.min.js",
+	"scripts/jquery-ui.js",
+	"scripts/d3.v3.min.js",
+	"scripts/d3.tip.v0.6.3.js",
     "scripts/main.js"
   ],
   "styles": [

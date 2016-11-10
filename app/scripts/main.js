@@ -87,6 +87,7 @@ function loadConceptCodes() {
 		},
 		type: "GET",
 		dataType: "json",
+		cache: true,
 		url: serviceURL + "service.cgi?file=three",
 	}).done(function(response) {
 		var datatemp = response.stuff;
@@ -118,6 +119,7 @@ function loadInteractions() {
 		},
 		type: "GET",
 		dataType: "json",
+		cache: true,
 		url: serviceURL + "service.cgi?file=one",
 	}).done(function(response) {
 		var datatemp = response.stuff;
@@ -279,6 +281,7 @@ function makeChart(type) {
 			},
 			type: "GET",
 			dataType: "json",
+			cache: true,
 			url: serviceURL + "service.cgi?file=two",
 		}).done(function(response) {
 			var datatemp = response.stuff;
@@ -438,6 +441,7 @@ function makeChart(type) {
 			},
 			type: "GET",
 			dataType: "json",
+			cache: true,
 			url: serviceURL + "service.cgi?file=four",
 		}).done(function(response) {
 			var datatemp = response.stuff;
