@@ -3,7 +3,7 @@
   "description": "Araport 50 Years of Arabidopsis App from the BAR",
   "icon": "app/images/BAR.png",
   "tags": [
-  	"BAR", "Arapidopsis", "Research", "Publications"
+  	"BAR", "Arabidopsis", "Research", "Publications"
   ],
   "fullscreen": "default",
   "html": "main.html",
