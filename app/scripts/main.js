@@ -6,6 +6,7 @@ var allBackLinks = {}; // an associative array keyed by BCI_ID of the pubs that 
 var allConceptCodes = []; // a duplicate of allPubs, but cast as an array with 'value' and 'label' tags so autocomplete can use it
 var searchMode = false;
 var displayMode = "category46";
+var serviceURL = "https://api.araport.org/community/v0.3/asher-dev/50years_v0.1.3/access/"
 //var displayMode = "citationType";
 
 var autocompleteArray = [];
@@ -80,82 +81,79 @@ function nonAthCitationIndicator(nonAthNum, athNum, color) {
 //--------------------------------------------//
 // Load concept codes data
 function loadConceptCodes() {
-	query = {
-		file: "three"
-	};
-
-	window.Agave.api.adama.search({
-		'namespace':'asher-dev', 'service': '50years_v0.1.1', 'queryParams': query
-	} , function(response) {
-		var mydata = JSON.parse(response.data);
-		var datatemp = mydata.stuff;
+	$.ajax({
+		beforeSend: function(request) {
+			request.setRequestHeader('Authorization', 'Bearer ' + Agave.token.accessToken);
+		},
+		type: "GET",
+		dataType: "json",
+		url: serviceURL + "service.cgi?file=three",
+	}).done(function(response) {
+		var datatemp = response.stuff;
 		//alert(datatemp);
 		data = getd3tsv(datatemp);
-        //console.log(data);
-        for (var i = 0; i < data.length; i++) {
-            // Add to the array
-            allConceptCodes[data[i].ConceptCode] = data[i];
-        }
-        console.log("Loaded all Concept Codes");
+    	//console.log(data);
+    	for (var i = 0; i < data.length; i++) {
+    	    // Add to the array
+    	    allConceptCodes[data[i].ConceptCode] = data[i];
+    	}
+    	console.log("Loaded all Concept Codes");
 
-        // prebuild legend
-        if (displayMode == "category46") {
-            drawCategory46Legend();
-        } else {
-            drawCitationTypeLegend();
-        }
-    })
+    	// prebuild legend
+    	if (displayMode == "category46") {
+    	    drawCategory46Legend();
+    	} else {
+    	    drawCitationTypeLegend();
+    	}
+    });
 }
 
 
 //--------------------------------------------//
 // Load interactions data
 function loadInteractions() {
-	query = {
-		file: "one"
-	};
-
-	window.Agave.api.adama.search({
-		'namespace':'asher-dev', 'service': '50years_v0.1.1', 'timeout': 360000, 'queryParams': query
-	} , function(response) {
-
-		var mydata = JSON.parse(response.data);
-		var datatemp = mydata.stuff;
+	$.ajax({
+		beforeSend: function(request) {
+			request.setRequestHeader('Authorization', 'Bearer ' + Agave.token.accessToken);
+		},
+		type: "GET",
+		dataType: "json",
+		url: serviceURL + "service.cgi?file=one",
+	}).done(function(response) {
+		var datatemp = response.stuff;
 		//alert(datatemp);
 		data = getd3tsv(datatemp);
-        console.log("Loaded allLinks");
+	    console.log("Loaded allLinks");
 
-        for (var i = 0; i < data.length; i++) {
-            // If BCI_ID exists, add the links to the array
-            if (data[i].BCI_ID in allLinks) {
-                allLinks[data[i].BCI_ID].push(data[i].Citing);
-            }
-            // otherwise create a new record and the element to the array
-            else {
-                allLinks[data[i].BCI_ID] = [];
-                allLinks[data[i].BCI_ID].push(data[i].Citing);
-            }
-        };
+	    for (var i = 0; i < data.length; i++) {
+	        // If BCI_ID exists, add the links to the array
+	        if (data[i].BCI_ID in allLinks) {
+	            allLinks[data[i].BCI_ID].push(data[i].Citing);
+	        }
+	        // otherwise create a new record and the element to the array
+	        else {
+	            allLinks[data[i].BCI_ID] = [];
+	            allLinks[data[i].BCI_ID].push(data[i].Citing);
+	        }
+	    };
 
-        console.log("Built associative array of citations.");
-
-
-        for (var i = 0; i < data.length; i++) {
-            // If BCI_ID exists, add the links to the array
-            if (data[i].Citing in allBackLinks) {
-                allBackLinks[data[i].Citing].push(data[i].BCI_ID);
-           
-            // otherwise create a new record and the element to the array
-            } else {
-                allBackLinks[data[i].Citing] = [];
-                allBackLinks[data[i].Citing].push(data[i].BCI_ID);
-            }
-        };
-
-        console.log("Built associative array of backward references");
+	    console.log("Built associative array of citations.");
 
 
-        console.log("Ready to use.");
+	    for (var i = 0; i < data.length; i++) {
+	        // If BCI_ID exists, add the links to the array
+	        if (data[i].Citing in allBackLinks) {
+	            allBackLinks[data[i].Citing].push(data[i].BCI_ID);
+	       
+	        // otherwise create a new record and the element to the array
+	        } else {
+	            allBackLinks[data[i].Citing] = [];
+	            allBackLinks[data[i].Citing].push(data[i].BCI_ID);
+	        }
+	    };
+
+	    console.log("Built associative array of backward references");
+	    console.log("Ready to use.");
     });
 }
 
@@ -238,17 +236,11 @@ function makeChart(type) {
     //}, 250);
 
     // add 'building chart' message
-
-
-
     if (type == "citationType") {
         console.log("building chart by Citation Type");
     }
 
     // based on d3 scatterplot by Mike Bostock: http://bl.ocks.org/mbostock/3887118
-
-
-
     var xAxis = d3.svg.axis()
         .scale(x)
         .orient("bottom")
@@ -280,325 +272,319 @@ function makeChart(type) {
 
         console.log("building chart by Category46");
         // LOAD DATA
-		query = {
-			file: "two"
-		};
 
-		window.Agave.api.adama.search({
-			'namespace':'asher-dev', 'service': '50years_v0.1.1', 'queryParams': query
-		} , function(response) {
-			var mydata = JSON.parse(response.data);
-			var datatemp = mydata.stuff;
+		$.ajax({
+			beforeSend: function(request) {
+				request.setRequestHeader('Authorization', 'Bearer ' + Agave.token.accessToken);
+			},
+			type: "GET",
+			dataType: "json",
+			url: serviceURL + "service.cgi?file=two",
+		}).done(function(response) {
+			var datatemp = response.stuff;
 			//alert(datatemp);
 			data = getd3tsv(datatemp);
 
-                buildAssociativeArrayOfData(data);
-                // make a color table for each category
-                makeCategoryColorTable();
+        	    buildAssociativeArrayOfData(data);
+        	    // make a color table for each category
+        	    makeCategoryColorTable();
 
-                // set y positions for each element based on how many pubs there are per year
-                data.forEach(function(d) {
-                    numPubsPerYear[d.Year] += 1;
-                    d.y = numPubsPerYear[d.Year];
-                });
+        	    // set y positions for each element based on how many pubs there are per year
+        	    data.forEach(function(d) {
+        	        numPubsPerYear[d.Year] += 1;
+        	        d.y = numPubsPerYear[d.Year];
+        	    });
 
-                ///console.log (numPubsPerYear);
+        	    ///console.log (numPubsPerYear);
 
-                // set range of axis
-                x.domain([1965, 2015]);
-                y.domain([0, 4000]);
+        	    // set range of axis
+        	    x.domain([1965, 2015]);
+        	    y.domain([0, 4000]);
 
-                // add axis labels
-                svg.append("g")
-                    .attr("class", "x axis")
-                    .attr("transform", "translate(0," + height + ")")
-                    .call(xAxis)
-                    .append("text")
-                    .attr("class", "label")
-                    .attr("x", width)
-                    .attr("y", -6)
-                    .style("text-anchor", "end")
-                    .text("Year");
+        	    // add axis labels
+        	    svg.append("g")
+        	        .attr("class", "x axis")
+        	        .attr("transform", "translate(0," + height + ")")
+        	        .call(xAxis)
+        	        .append("text")
+        	        .attr("class", "label")
+        	        .attr("x", width)
+        	        .attr("y", -6)
+        	        .style("text-anchor", "end")
+        	        .text("Year");
 
-                svg.append("g")
-                    .attr("class", "y axis")
-                    .call(yAxis)
-                    .append("text")
-                    .attr("class", "label")
-                    .attr("transform", "rotate(-90)")
-                    .attr("x", -height / 2)
-                    .attr("y", -60)
-                    .attr("dy", ".71em")
-                    .style("text-anchor", "end")
-                    .text("Publications");
+        	    svg.append("g")
+        	        .attr("class", "y axis")
+        	        .call(yAxis)
+        	        .append("text")
+        	        .attr("class", "label")
+        	        .attr("transform", "rotate(-90)")
+        	        .attr("x", -height / 2)
+        	        .attr("y", -60)
+        	        .attr("dy", ".71em")
+        	        .style("text-anchor", "end")
+        	        .text("Publications");
 
-                // Add tooltips
-                svg.call(tip);
+        	    // Add tooltips
+        	    svg.call(tip);
 
-                // The slow part... !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        	    // The slow part... !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-                // Add extended mouseover targets for each data point
-                svg.selectAll(".mouseTarget")
-                    .data(data)
-                    .enter().append("rect")
-                    .attr("id", function(d) {
-                        return "mouseTarget" + d.BCI_ID
-                    }) // give each circle an ID tag
-                    //.attr("class", "pub")
-                    .attr("class", function(d) {
-                        return "mouseTarget"
-                    })
-                    .attr("height", "1")
-                    .attr("width", function(d) {
-                        return dotSize(3500);
-                    })
-                    .attr("y", function(d) {
-                        return y(d.y);
-                    }) //- (y(numPubsPerYear[d.Year])/2); })
-                    .attr("x", function(d) {
-                        return x(d.Year);
-                    })
-                    .style("fill", function(d) {
-                        return "rgba(255,255,255,0)";
-                    })
-                    .style("display", function(d) {
-                        if (d.Year < 1965) {
-                            return "none"; // don't show any pubs prior to 1965
-                        } else {
-                            return "block";
-                        }
-                    })
+        	    // Add extended mouseover targets for each data point
+        	    svg.selectAll(".mouseTarget")
+        	        .data(data)
+        	        .enter().append("rect")
+        	        .attr("id", function(d) {
+        	            return "mouseTarget" + d.BCI_ID
+        	        }) // give each circle an ID tag
+        	        //.attr("class", "pub")
+        	        .attr("class", function(d) {
+        	            return "mouseTarget"
+        	        })
+        	        .attr("height", "1")
+        	        .attr("width", function(d) {
+        	            return dotSize(3500);
+        	        })
+        	        .attr("y", function(d) {
+        	            return y(d.y);
+        	        }) //- (y(numPubsPerYear[d.Year])/2); })
+        	        .attr("x", function(d) {
+        	            return x(d.Year);
+        	        })
+        	        .style("fill", function(d) {
+        	            return "rgba(255,255,255,0)";
+        	        })
+        	        .style("display", function(d) {
+        	            if (d.Year < 1965) {
+        	                return "none"; // don't show any pubs prior to 1965
+        	            } else {
+        	                return "block";
+        	            }
+        	        })
 
-                // action listeners
-                .attr("onmouseover", function(d) { // run our mouseOverNode function on mouseover
-                        return "tip.show( allPubs['" + d.BCI_ID + "'], mouseTarget" + d.BCI_ID + "); mouseOverPub('" + d.BCI_ID + "')"
-                    })
-                    .attr("onmouseout", function(d) { // run our mouseOutNode function on mouseout
-                        return "tip.hide( allPubs['" + d.BCI_ID + "'], mouseTarget" + d.BCI_ID + "); mouseOutPub('" + d.BCI_ID + "')"
-                    })
-                    .attr("onclick", function(d) { // run our mouseOutNode function on mouseout
-                        return "mouseClickPub('" + d.BCI_ID + "')"
-                    });
-
-
-
-                // Add dots for each data point
-                svg.selectAll(".pub")
-                    .data(data)
-                    .enter().append("rect")
-                    .attr("id", function(d) {
-                        return "pub" + d.BCI_ID
-                    }) // give each circle an ID tag
-                    //.attr("class", "pub")
-                    .attr("class", function(d) {
-                        return "pub category" + d.Category46;
-                    })
-                    .attr("height", "1")
-                    .attr("width", function(d) {
-                        return dotSize(d.Citations);
-                    })
-                    .attr("y", function(d) {
-                        return y(d.y);
-                    }) //- (y(numPubsPerYear[d.Year])/2); })
-                    .attr("x", function(d) {
-                        return x(d.Year);
-                    })
-                    .style("fill", function(d) {
-                        return d.Color;
-                    })
-                    .style("display", function(d) {
-                        if (d.Year < 1965) {
-                            return "none"; // don't show any pubs prior to 1965
-                        } else {
-                            return "block";
-                        }
-                    });
+        	    // action listeners
+        	    .attr("onmouseover", function(d) { // run our mouseOverNode function on mouseover
+        	            return "tip.show( allPubs['" + d.BCI_ID + "'], mouseTarget" + d.BCI_ID + "); mouseOverPub('" + d.BCI_ID + "')"
+        	        })
+        	        .attr("onmouseout", function(d) { // run our mouseOutNode function on mouseout
+        	            return "tip.hide( allPubs['" + d.BCI_ID + "'], mouseTarget" + d.BCI_ID + "); mouseOutPub('" + d.BCI_ID + "')"
+        	        })
+        	        .attr("onclick", function(d) { // run our mouseOutNode function on mouseout
+        	            return "mouseClickPub('" + d.BCI_ID + "')"
+        	        });
 
 
-                // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                console.log("Chart is complete... get Links");
+
+        	    // Add dots for each data point
+        	    svg.selectAll(".pub")
+        	        .data(data)
+        	        .enter().append("rect")
+        	        .attr("id", function(d) {
+        	            return "pub" + d.BCI_ID
+        	        }) // give each circle an ID tag
+        	        //.attr("class", "pub")
+        	        .attr("class", function(d) {
+        	            return "pub category" + d.Category46;
+        	        })
+        	        .attr("height", "1")
+        	        .attr("width", function(d) {
+        	            return dotSize(d.Citations);
+        	        })
+        	        .attr("y", function(d) {
+        	            return y(d.y);
+        	        }) //- (y(numPubsPerYear[d.Year])/2); })
+        	        .attr("x", function(d) {
+        	            return x(d.Year);
+        	        })
+        	        .style("fill", function(d) {
+        	            return d.Color;
+        	        })
+        	        .style("display", function(d) {
+        	            if (d.Year < 1965) {
+        	                return "none"; // don't show any pubs prior to 1965
+        	            } else {
+        	                return "block";
+        	            }
+        	        });
 
 
-                // update the html page (add buttons, remove loading screen)
-                jQuery('#buttonsBelowChart').css('display', 'block');
-                jQuery('.loadingMessage').remove();
-                jQuery('.loadingGif').remove();
+        	    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        	    console.log("Chart is complete... get Links");
 
-            })
-           	/* .on("progress", function(event) {
-                //update progress bar
-                if (d3.event.lengthComputable) {
-                    var percentComplete = Math.round(d3.event.loaded * 100 / d3.event.total);
-                    //console.log("Downloading data: "+percentComplete+"%");
-                    if (percentComplete == 100) {
-                        console.log("Building chart.... stand by...");
-                    }
-                }
-            }); */
+
+        	    // update the html page (add buttons, remove loading screen)
+        	    jQuery('#buttonsBelowChart').css('display', 'block');
+        	    jQuery('.loadingMessage').remove();
+        	    jQuery('.loadingGif').remove();
+        }).progress(function(event) {
+        //update progress bar
+           if (d3.event.lengthComputable) {
+               var percentComplete = Math.round(d3.event.loaded * 100 / d3.event.total);
+               //console.log("Downloading data: "+percentComplete+"%");
+               if (percentComplete == 100) {
+                   console.log("Building chart.... stand by...");
+               }
+           }
+		}); 
     } else if (type == "citationType") {
         console.log("building chart by Citation Type");
         jQuery('#btn-showNotAth').addClass('disabled');
         jQuery('#btn-showCategory46').removeClass('disabled');
         // LOAD DATA
-		query = {
-			file: "four"
-		};
 
-		window.Agave.api.adama.search({
-			'namespace':'asher-dev', 'service': '50years_v0.1.1', 'queryParams': query
-		} , function(response) {
-			var mydata = JSON.parse(response.data);
-			var datatemp = mydata.stuff;
+		$.ajax({
+			beforeSend: function(request) {
+				request.setRequestHeader('Authorization', 'Bearer ' + Agave.token.accessToken);
+			},
+			type: "GET",
+			dataType: "json",
+			url: serviceURL + "service.cgi?file=four",
+		}).done(function(response) {
+			var datatemp = response.stuff;
 			//alert(datatemp);
 			data = getd3tsv(datatemp);
+        	buildAssociativeArrayOfData(data);
+        	// make a color table for each citationType
+        	makeCitationTypeColorTable();
 
-                buildAssociativeArrayOfData(data);
-                // make a color table for each citationType
-                makeCitationTypeColorTable();
+        	// set y positions for each element based on how many pubs there are per year
+        	data.forEach(function(d) {
+        	    numPubsPerYear[d.Year] += 1;
+        	    d.y = numPubsPerYear[d.Year];
+        	});
 
-                // set y positions for each element based on how many pubs there are per year
-                data.forEach(function(d) {
-                    numPubsPerYear[d.Year] += 1;
-                    d.y = numPubsPerYear[d.Year];
-                });
+        	///console.log (numPubsPerYear);
 
-                ///console.log (numPubsPerYear);
+        	// set range of axis
+        	x.domain([1965, 2015]);
+        	y.domain([0, 4000]);
 
-                // set range of axis
-                x.domain([1965, 2015]);
-                y.domain([0, 4000]);
+        	// add axis labels
+        	svg.append("g")
+        	    .attr("class", "x axis")
+        	    .attr("transform", "translate(0," + height + ")")
+        	    .call(xAxis)
+        	    .append("text")
+        	    .attr("class", "label")
+        	    .attr("x", width)
+        	    .attr("y", -6)
+        	    .style("text-anchor", "end")
+        	    .text("Year");
 
-                // add axis labels
-                svg.append("g")
-                    .attr("class", "x axis")
-                    .attr("transform", "translate(0," + height + ")")
-                    .call(xAxis)
-                    .append("text")
-                    .attr("class", "label")
-                    .attr("x", width)
-                    .attr("y", -6)
-                    .style("text-anchor", "end")
-                    .text("Year");
+        	svg.append("g")
+        	    .attr("class", "y axis")
+        	    .call(yAxis)
+        	    .append("text")
+        	    .attr("class", "label")
+        	    .attr("transform", "rotate(-90)")
+        	    .attr("x", -height / 2)
+        	    .attr("y", -60)
+        	    .attr("dy", ".71em")
+        	    .style("text-anchor", "end")
+        	    .text("Publications");
 
-                svg.append("g")
-                    .attr("class", "y axis")
-                    .call(yAxis)
-                    .append("text")
-                    .attr("class", "label")
-                    .attr("transform", "rotate(-90)")
-                    .attr("x", -height / 2)
-                    .attr("y", -60)
-                    .attr("dy", ".71em")
-                    .style("text-anchor", "end")
-                    .text("Publications");
+        	// Add tooltips
+        	svg.call(tip);
 
-                // Add tooltips
-                svg.call(tip);
+        	// The slow part... !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-                // The slow part... !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        	// Add extended mouseover targets for each data point
+        	svg.selectAll(".mouseTarget")
+        	    .data(data)
+        	    .enter().append("rect")
+        	    .attr("id", function(d) {
+        	        return "mouseTarget" + d.BCI_ID
+        	    }) // give each circle an ID tag
+        	    //.attr("class", "pub")
+        	    .attr("class", function(d) {
+        	        return "mouseTarget"
+        	    })
+        	    .attr("height", "1")
+        	    .attr("width", function(d) {
+        	        return dotSize(3500);
+        	    })
+        	    .attr("y", function(d) {
+        	        return y(d.y);
+        	    }) //- (y(numPubsPerYear[d.Year])/2); })
+        	    .attr("x", function(d) {
+        	        return x(d.Year);
+        	    })
+        	    .style("fill", function(d) {
+        	        return "rgba(255,255,255,0)";
+        	    })
+        	    .style("display", function(d) {
+        	        if (d.Year < 1965) {
+        	            return "none"; // don't show any pubs prior to 1965
+        	        } else {
+        	            return "block";
+        	        }
+        	    })
 
-                // Add extended mouseover targets for each data point
-                svg.selectAll(".mouseTarget")
-                    .data(data)
-                    .enter().append("rect")
-                    .attr("id", function(d) {
-                        return "mouseTarget" + d.BCI_ID
-                    }) // give each circle an ID tag
-                    //.attr("class", "pub")
-                    .attr("class", function(d) {
-                        return "mouseTarget"
-                    })
-                    .attr("height", "1")
-                    .attr("width", function(d) {
-                        return dotSize(3500);
-                    })
-                    .attr("y", function(d) {
-                        return y(d.y);
-                    }) //- (y(numPubsPerYear[d.Year])/2); })
-                    .attr("x", function(d) {
-                        return x(d.Year);
-                    })
-                    .style("fill", function(d) {
-                        return "rgba(255,255,255,0)";
-                    })
-                    .style("display", function(d) {
-                        if (d.Year < 1965) {
-                            return "none"; // don't show any pubs prior to 1965
-                        } else {
-                            return "block";
-                        }
-                    })
-
-                // action listeners
-                .attr("onmouseover", function(d) { // run our mouseOverNode function on mouseover
-                        return "tip.show( allPubs['" + d.BCI_ID + "'], mouseTarget" + d.BCI_ID + "); mouseOverPub('" + d.BCI_ID + "')"
-                    })
-                    .attr("onmouseout", function(d) { // run our mouseOutNode function on mouseout
-                        return "tip.hide( allPubs['" + d.BCI_ID + "'], mouseTarget" + d.BCI_ID + "); mouseOutPub('" + d.BCI_ID + "')"
-                    })
-                    .attr("onclick", function(d) { // run our mouseOutNode function on mouseout
-                        return "mouseClickPub('" + d.BCI_ID + "')"
-                    });
-
+        	// action listeners
+        	.attr("onmouseover", function(d) { // run our mouseOverNode function on mouseover
+        	        return "tip.show( allPubs['" + d.BCI_ID + "'], mouseTarget" + d.BCI_ID + "); mouseOverPub('" + d.BCI_ID + "')"
+        	    })
+        	    .attr("onmouseout", function(d) { // run our mouseOutNode function on mouseout
+        	        return "tip.hide( allPubs['" + d.BCI_ID + "'], mouseTarget" + d.BCI_ID + "); mouseOutPub('" + d.BCI_ID + "')"
+        	    })
+        	    .attr("onclick", function(d) { // run our mouseOutNode function on mouseout
+        	        return "mouseClickPub('" + d.BCI_ID + "')"
+        	    });
 
 
-                // Add dots for each data point
-                svg.selectAll(".pub")
-                    .data(data)
-                    .enter().append("rect")
-                    .attr("id", function(d) {
-                        return "pub" + d.BCI_ID
-                    }) // give each circle an ID tag
-                    //.attr("class", "pub")
-                    .attr("class", function(d) {
-                        return "pub category" + d.Category46;
-                    })
-                    .attr("height", "1")
-                    .attr("width", function(d) {
-                        return dotSize(d.Citations);
-                    })
-                    .attr("y", function(d) {
-                        return y(d.y);
-                    }) //- (y(numPubsPerYear[d.Year])/2); })
-                    .attr("x", function(d) {
-                        return x(d.Year);
-                    })
-                    .style("fill", function(d) {
-                        return d.Color;
-                    })
-                    .style("display", function(d) {
-                        if (d.Year < 1965) {
-                            return "none"; // don't show any pubs prior to 1965
-                        } else {
-                            return "block";
-                        }
-                    });
+
+        	// Add dots for each data point
+        	svg.selectAll(".pub")
+        	    .data(data)
+        	    .enter().append("rect")
+        	    .attr("id", function(d) {
+        	        return "pub" + d.BCI_ID
+        	    }) // give each circle an ID tag
+        	    //.attr("class", "pub")
+        	    .attr("class", function(d) {
+        	        return "pub category" + d.Category46;
+        	    })
+        	    .attr("height", "1")
+        	    .attr("width", function(d) {
+        	        return dotSize(d.Citations);
+        	    })
+        	    .attr("y", function(d) {
+        	        return y(d.y);
+        	    }) //- (y(numPubsPerYear[d.Year])/2); })
+        	    .attr("x", function(d) {
+        	        return x(d.Year);
+        	    })
+        	    .style("fill", function(d) {
+        	        return d.Color;
+        	    })
+        	    .style("display", function(d) {
+        	        if (d.Year < 1965) {
+        	            return "none"; // don't show any pubs prior to 1965
+        	        } else {
+        	            return "block";
+        	        }
+        	    });
 
 
-                // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                console.log("Chart is complete... get Links");
+        	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        	console.log("Chart is complete... get Links");
 
-                // update the html page (add buttons, remove loading screen)
-                jQuery('#buttonsBelowChart').css('display', 'block');
-                jQuery('.loadingMessage').remove();
-                jQuery('.loadingGif').remove();
-
-
-            });
-            /*.on("progress", function(event) {
-                //update progress bar
-                if (d3.event.lengthComputable) {
-                    var percentComplete = Math.round(d3.event.loaded * 100 / d3.event.total);
-                    //console.log("Downloading data: "+percentComplete+"%");
-                    if (percentComplete == 100) {
-                        console.log("Building chart.... stand by...");
-                    }
+        	// update the html page (add buttons, remove loading screen)
+        	jQuery('#buttonsBelowChart').css('display', 'block');
+        	jQuery('.loadingMessage').remove();
+        	jQuery('.loadingGif').remove();
+        }).progress(function(event) {
+            //update progress bar
+            if (d3.event.lengthComputable) {
+                var percentComplete = Math.round(d3.event.loaded * 100 / d3.event.total);
+                //console.log("Downloading data: "+percentComplete+"%");
+                if (percentComplete == 100) {
+                    console.log("Building chart.... stand by...");
                 }
-            });*/
+            }
+        });
     }
-
 }
-
 
 //--------------------------------------------//
 // store loaded data in a global array of All Pubs
@@ -954,9 +940,6 @@ function drawNonAthInteractionLines(BCI_ID, x, y, num) {
         .style("font-weight", "normal")
         .style("font-size", ".8em")
         .text(allPubs[BCI_ID].NumNotAthCitations + " Non-Ath citations");
-
-
-
 }
 
 
